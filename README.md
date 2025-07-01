@@ -1,6 +1,4 @@
 # MedResearchTrendSpotter | Medical-Research-Trends
-
-# MedResearchTrendSpotter
 An NLP-driven tool to identify and visualize trends in medical research from PubMed abstracts.
 
 ## Overview
