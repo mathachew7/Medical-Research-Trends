@@ -4,6 +4,9 @@ An NLP-driven tool to identify and visualize trends in medical research from Pub
 ## Overview
 The **MedResearchTrendSpotter** is a Python-based project designed to identify and visualize emerging trends in medical research. It automates the collection of PubMed abstracts, performs natural language processing (NLP) to extract key concepts (unigrams and bigrams), and then analyzes their frequency over time to spotlight trending topics.
 
+This tool visualizes trends in PubMed abstracts (2015–2024) using NLP. Built to help researchers, educators, and policymakers understand what’s changing in medical research.
+
+
 ## Features
 - **PubMed Data Collection:** Fetches medical abstract data from PubMed using its API (requires an NCBI API Key).
 - **Robust Data Preprocessing:** Cleans and prepares raw abstract text, handling missing values, standardizing formats, and combining relevant text fields.
