@@ -1,0 +1,117 @@
+/* static/style.css */
+body {
+  margin: 0;
+  padding: 0;
+  background: #0b1727;
+  font-family: 'Inter', sans-serif;
+  color: #fff;
+}
+
+.dashboard {
+  padding: 2rem;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.header h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.top-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  background: #15263e;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  flex: 1;
+  min-width: 180px;
+  text-align: center;
+}
+
+.stat-title {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+  color: #fff;
+}
+
+.main-row {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.left-panel {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.right-panel {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 500px;
+}
+
+.card {
+  background: #15263e;
+  border-radius: 8px;
+  padding: 1rem;
+  color: #fff;
+}
+
+.card h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #22334c;
+  font-size: 0.95rem;
+}
+
+.bottom-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.bottom-row .card {
+  flex: 1;
+  min-width: 300px;
+}
+
+button.download-btn {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

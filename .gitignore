@@ -28,3 +28,39 @@ data/medical_trends.csv
 
 # Logs (if you generate any application logs)
 *.log
+
+# Virtual Environment
+venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.so
+
+# Logs
+logs/
+*.log
+
+# Data and artifacts
+*.csv
+*.tsv
+*.xlsx
+*.json
+*.xml
+*.db
+*.sqlite
+*.sqlite3
+
+# Output folders
+plots/
+
+# System files
+.DS_Store
+
+# Model or package files
+*.tar.gz
+*.whl
+
+# VSCode and IDE settings
+.vscode/
+.idea/
