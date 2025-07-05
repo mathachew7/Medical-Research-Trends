@@ -1,237 +1,228 @@
-# MedResearchTrendSpotter | Medical-Research-Trends
-An NLP-driven tool to identify and visualize trends in medical research from PubMed abstracts.
+MedResearchTrendSpotter | Medical Research Trends Analysis
+An NLP-powered pipeline that extracts, analyzes, and visualizes evolving medical research trends using PubMed abstracts (2015–2024).
 
-## Overview
-The **MedResearchTrendSpotter** is a Python-based project designed to identify and visualize emerging trends in medical research. It automates the collection of PubMed abstracts, performs natural language processing (NLP) to extract key concepts (unigrams and bigrams), and then analyzes their frequency over time to spotlight trending topics.
+📌 Project Summary
+MedResearchTrendSpotter is a robust and complete system designed to identify and analyze high-impact trends within the vast landscape of medical research. By leveraging the PubMed API (via NCBI Entrez) and advanced Natural Language Processing (NLP) techniques, this pipeline automates the collection and processing of medical abstracts, extracts significant keywords and n-grams, and generates comprehensive trend data. The extracted insights are then presented through an interactive web-based dashboard, offering visual insights into emerging research themes.
 
-This tool visualizes trends in PubMed abstracts (2015–2024) using NLP. Built to help researchers, educators, and policymakers understand what’s changing in medical research.
+This tool is built to empower researchers, academic institutions, and policymakers by providing an automated and efficient way to discover and monitor the evolution of medical research trends, facilitating informed decision-making and strategic planning.
 
+🚀 Features
+Automated Abstract Collection: Seamlessly gathers medical abstracts and metadata from PubMed using the NCBI Entrez API for a specified keyword and year range.
 
-## Features
-- **PubMed Data Collection:** Fetches medical abstract data from PubMed using its API (requires an NCBI API Key).
-- **Robust Data Preprocessing:** Cleans and prepares raw abstract text, handling missing values, standardizing formats, and combining relevant text fields.
-- **Advanced NLP:** Applies text cleaning (removing special characters, numbers, stopwords), lemmatization, and TF-IDF (Term Frequency-Inverse Document Frequency) to identify the most significant unigrams (single words) and bigrams (two-word phrases).
-- **Trend Analysis:** Calculates the annual frequency of the top identified medical concepts to show their evolution over different years.
-- **Structured Output:** Saves processed data and trend analysis results into clean CSV files.
+Comprehensive Text Processing: Implements a robust NLP pipeline including:
 
-## Project Structure
-📁 Project Structure
+Text Cleaning (lowercase, punctuation/number removal).
 
-```markdown
+Stopword Removal.
+
+Lemmatization.
+
+TF-IDF (Term Frequency-Inverse Document Frequency) for keyword importance.
+
+Unigram & Bigram Extraction: Identifies and ranks significant single words (unigrams) and two-word phrases (bigrams) based on their frequency and TF-IDF scores.
+
+Annual Trend Calculation: Computes the yearly frequency of each extracted term, generating a valuable trend matrix.
+
+Data Export: Produces clean CSV files for raw, processed, and trend-specific data, along with JSON for category mappings.
+
+Interactive Web Dashboard: A user-friendly frontend built with HTML and powered by Chart.js for dynamic and insightful visualizations, including:
+
+Line charts for "Trends Over Time".
+
+Donut/Pie charts for "Top Keywords" distribution.
+
+Bar charts for "Forecast" predictions.
+
+Keyword co-occurrence visualization (conceptually a word cloud).
+
+Direct links to "Recent Abstracts".
+
+Future-ready for data filtering by category and year range.
+
+📁 Folder Structure
 MedResearchTrendSpotter/
 ├── data/
-│   ├── pubmed_abstracts_raw.csv         # Raw abstracts collected from PubMed
-│   ├── pubmed_abstracts_processed.csv   # Cleaned and NLP-processed abstracts
-│   └── medical_trends.csv               # Annual frequencies of top medical keywords/n-grams
-├── .env.example                         # Example for environment variables (.env file)
-├── .gitignore                           # Specifies files/directories to ignore in Git
-├── data_collector.py                    # Script for collecting data from PubMed
-├── nlp_processor.py                     # Script for NLP processing and trend analysis
-├── requirements.txt                     # List of Python dependencies
-└── README.md                            # This documentation file
+│   ├── pubmed_abstracts_raw.csv         # Raw downloaded abstracts from PubMed
+│   ├── pubmed_abstracts_processed.csv   # Cleaned and NLP-processed text
+│   ├── medical_trends.csv               # Term frequency matrix per year (main trend data)
+│   ├── term_category_backtrack.json     # Mapping of extracted terms to broader categories
+│   └── category_trends.csv              # Aggregated term counts summed by category
+├── static/
+│   └── script.js                        # JavaScript logic for dashboard charts and interactivity
+├── templates/
+│   └── index.html                       # Main HTML file for the interactive dashboard
+├── .env                                 # Environment variables (e.g., API keys, email)
+├── .gitignore                           # Specifies intentionally untracked files to ignore
+├── app.py                               # Flask web application backend
+├── data_collector.py                    # Script to collect data from PubMed API
+├── nlp_processor.py                     # Script for text preprocessing and TF-IDF analysis
+├── trend_visualizer.py (optional)       # Placeholder for potential future dedicated visualization script
+├── requirements.txt                     # Python dependencies for the project
+└── README.md                            # Project documentation (this file)
 
-```
 
----
+🧠 How It Works
+The MedResearchTrendSpotter operates through a sequential, modular pipeline:
 
-## The Journey So Far: Problem, Process, and Progress
+Step 1: Data Collection
+Script: data_collector.py
 
-### 🎯 What Problem Are We Solving?
+Functionality: This script establishes a connection to the PubMed database via the NCBI Entrez API. It efficiently downloads relevant metadata and full abstracts based on a specified primary keyword and a defined year range (e.g., 2015-2024).
 
-Imagine you're a medical researcher, a healthcare policy maker, or someone just deeply interested in how medical science evolves. You want to know:
+Output: The raw, collected data is saved as data/pubmed_abstracts_raw.csv.
 
-- ❓ *What diseases are getting more attention this year compared to five years ago?*
-- ❓ *Are there new treatment approaches gaining traction?*
-- ❓ *Is research shifting towards gene therapy or away from traditional pharmaceuticals?*
+Step 2: Text Preprocessing & Analysis
+Script: nlp_processor.py
 
-Reading hundreds of thousands of scientific papers manually is impossible.  
-That’s where **MedResearchTrendSpotter** comes in! We're **turning thousands of medical papers into actionable trend insights.**
+Functionality: This core NLP script performs several critical operations:
 
-### 🔍 What We're Building (The "Why")
+Cleaning: It cleans and merges the abstract and title fields from the raw data.
 
-Our goal is to build an automated **“trend radar”** for medical research using **Natural Language Processing (NLP)** and programming.
+NLP Pipeline: Applies a series of Natural Language Processing steps, including converting text to lowercase, removing punctuation and numbers, eliminating common stopwords, and lemmatizing words to their base forms.
 
-We aim to:
+Keyword Extraction: Utilizes TF-IDF (Term Frequency-Inverse Document Frequency) to identify the top 500 most significant keywords, including both unigrams (single words) and bigrams (two-word phrases).
 
-- 📥 **Gather massive datasets** from PubMed (medical abstracts).
-- 🧹 **Clean and preprocess** the text for machine understanding.
-- 🧠 **Extract keywords & buzzwords** using smart algorithms.
-- 📊 **Track term usage over time** to identify trends.
-- 📈 **Visualize those trends** to get a bird’s-eye view of the evolution of medical research.
+Trend Tracking: Systematically tracks the yearly frequency of each extracted term, which is crucial for trend analysis.
 
-### ✅ What We've Accomplished
+Output: Processed text is saved in data/pubmed_abstracts_processed.csv, and the term frequency matrix is generated as data/medical_trends.csv. Additional mapping and aggregated category data are stored in data/term_category_backtrack.json and data/category_trends.csv.
 
-#### Phase 1: 🕵️ The Data Hunter (Data Collection)
+Step 3: Dashboard & Visualization
+Frontend: templates/index.html (HTML structure) + static/script.js (JavaScript for interactivity)
 
-**Script:** `data_collector.py`
+Functionality: This component provides an intuitive and interactive user interface to explore the analyzed trends:
 
-- Connects to the **PubMed API** using an API key and email.
-- Collects abstracts from a defined date range (e.g., 2015–present).
-- Saves results into: `data/pubmed_abstracts_raw.csv`
+Interactive Charts: Displays "Trends Over Time" using line charts, "Top Keywords" distribution via donut/pie charts, and "Forecast" insights through bar charts. These are rendered dynamically using Chart.js.
 
-> 🔹 *“You can't analyze what you don't have!”*
+Keyword Co-occurrence: Visualizes relationships between keywords (conceptually as a word cloud or network).
 
-#### Phase 2: ⚗️ The Data Alchemist (Processing & Trend Analysis)
+Recent Abstracts: Presents a list of recent abstracts with links, allowing users to quickly access source information.
 
-**Script:** `nlp_processor.py`
+Filtering Capabilities: Designed to support future filters by category and year range, enhancing data exploration.
 
-This script transforms raw text into meaningful insights.
+📊 Output Files
+pubmed_abstracts_raw.csv: Contains the original, unprocessed data downloaded directly from PubMed.
 
-##### Step 2.1: Initial Data Cleanup
+pubmed_abstracts_processed.csv: Stores the abstracts after text cleaning and NLP preprocessing, including a CleanText column.
 
-- Filters papers by year.
-- Handles missing abstracts/titles.
-- Combines title + abstract into a single `FullText` column.
+medical_trends.csv: A matrix detailing the frequency of each extracted term across different years, forming the basis for trend analysis.
 
-##### Step 2.2: Deep NLP Cleaning
+category_trends.csv: Aggregated counts of terms, summed by their respective broader categories, useful for high-level trend overviews.
 
-For each abstract:
-- Removes punctuation, numbers, and special characters.
-- Converts text to lowercase.
-- Tokenizes text into words.
-- Removes stopwords (e.g., "the", "is").
-- Lemmatizes words (e.g., "running", "ran" → "run").
+term_category_backtrack.json: A JSON file providing a mapping from specific extracted terms back to their assigned categories, facilitating filtering and categorization.
 
-→ Results in a new `CleanText` column.
+🖥️ Local Setup & Running Instructions
+Follow these steps to get MedResearchTrendSpotter up and running on your local machine.
 
-##### Step 2.3: Key Concepts Extraction (TF-IDF)
+1. Clone the Repository
+Begin by cloning the project repository from GitHub:
 
-- Applies **TF-IDF (Term Frequency-Inverse Document Frequency)** on clean text.
-- Extracts top **500 keywords/n-grams** (e.g., "gene therapy", "cell culture").
+git clone https://github.com/mathachew7/MedResearchTrendSpotter.git
+cd MedResearchTrendSpotter
 
-##### Step 2.4: Tracking Annual Frequencies
 
-- For each year, counts how often each top keyword appears.
-- Builds a year-by-year frequency matrix.
+2. Create & Activate Virtual Environment
+It's highly recommended to use a virtual environment to manage project dependencies:
 
-📂 **Outputs:**
-- `data/pubmed_abstracts_processed.csv` – With clean text per paper.
-- `data/medical_trends.csv` – Rows = years, Columns = buzzwords, Values = frequencies.
+python -m venv venv
 
----
 
-## 📈 What's Next: The Storyteller (Data Visualization)
+Activate the virtual environment:
 
-### Phase 3: 📊 Visualizing the Trends
+macOS/Linux:
 
-**Script:** `trend_visualizer.py` (Coming Up)
+source venv/bin/activate
 
-#### What it will do:
 
-- Load `data/medical_trends.csv`
-- Use **Matplotlib**, **Seaborn**, or **Plotly** for visualization.
+Windows (Command Prompt):
 
-#### Types of Charts:
+venv\Scripts\activate.bat
 
-- 📉 **Line Charts:** Show term frequency trends over time.
-- 📊 **Bar Charts:** Show most popular terms per year.
-- 🌡️ **Heatmaps:** Show term shifts across years.
-- 🚀 **Emerging Trends:** Spot sudden rises of new keywords.
 
-#### Why it matters:
+Windows (PowerShell):
 
-A CSV file can’t tell a story — a beautiful chart can!
+.\venv\Scripts\Activate.ps1
 
-- Instantly see **rising research topics**
-- Spot **declining interest areas**
-- Identify **breakthroughs and innovations**
 
-📦 **Final Output:** A collection of graphs that reveal **what’s hot and what’s not** in the world of medical research.
+3. Install Dependencies
+Install all required Python packages using pip:
 
----
+pip install -r requirements.txt
 
-## Setup and Installation
 
-### Prerequisites
-- Python 3.8+
-- Git
+4. Download NLTK Assets
+Some NLP functionalities require specific NLTK data packages. Download them:
 
-### Steps
+python -c "import nltk; nltk.download('stopwords'); nltk.download('wordnet'); nltk.download('omw-1.4')"
 
-1.  **Clone the Repository:**
-    First, clone this repository to your local machine:
-    ```bash
-    git clone [https://github.com/mathachew7/MedResearchTrendSpotter.git](https://github.com/mathachew7/MedResearchTrendSpotter.git)
-    cd MedResearchTrendSpotter
-    ```
 
-2.  **Create a Virtual Environment:**
-    It's highly recommended to use a virtual environment to manage project dependencies.
-    ```bash
-    python -m venv venv
-    ```
+5. Setup .env File
+Create a file named .env in the root directory of your project. This file will store your sensitive API key and email for accessing the NCBI PubMed API.
 
-3.  **Activate the Virtual Environment:**
-    -   **macOS/Linux:**
-        ```bash
-        source venv/bin/activate
-        ```
-    -   **Windows (Command Prompt):**
-        ```bash
-        venv\Scripts\activate.bat
-        ```
-    -   **Windows (PowerShell):**
-        ```bash
-        venv\Scripts\Activate.ps1
-        ```
+NCBI_API_KEY=your_ncbi_api_key_here
+NCBI_EMAIL=your_email@example.com
 
-4.  **Install Dependencies:**
-    Install all required Python packages using pip:
-    ```bash
-    pip install -r requirements.txt
-    ```
 
-5.  **NLTK Data Download:**
-    The project uses NLTK for stopwords and lemmatization. You need to download these datasets once:
-    ```bash
-    python -c "import nltk; nltk.download('stopwords'); nltk.download('wordnet'); nltk.download('omw-1.4')"
-    ```
+Important: Replace your_ncbi_api_key_here with your actual NCBI API key obtained from NCBI. Replace your_email@example.com with your valid email address, as it's required by the Entrez API.
 
-6.  **Set up Environment Variables:**
-    Create a `.env` file in the root directory of the project based on `.env.example`. This file will store your sensitive API key and email.
-    ```
-    # .env
-    NCBI_API_KEY=YOUR_NCBI_API_KEY
-    NCBI_EMAIL=YOUR_EMAIL@example.com
-    ```
-    **Replace `YOUR_NCBI_API_KEY` with your actual NCBI API key** (you can obtain one from the [NCBI Developer's page](https://www.ncbi.nlm.nih.gov/account/settings/)).
-    **Replace `YOUR_EMAIL@example.com` with your actual email address.** NCBI requires this for API usage.
+6. Run the Scripts
+Execute the pipeline scripts in the following order:
 
-## Usage
+Collect PubMed Abstracts
+This will fetch raw data from PubMed.
 
-After setting up, run the scripts in the following order:
+python data_collector.py
 
-1.  **Collect Data:**
-    This script fetches abstracts from PubMed and saves them to `data/pubmed_abstracts_raw.csv`.
-    ```bash
-    python data_collector.py
-    ```
 
-2.  **Process Data and Analyze Trends:**
-    This script cleans the raw data, applies NLP, extracts top keywords/n-grams, and calculates their annual frequencies, saving the results to `data/medical_trends.csv`.
-    ```bash
-    python nlp_processor.py
-    ```
+Run NLP Processing + Generate Trend CSV
+This will clean the data, apply NLP, and generate trend metrics.
 
-## Output Files
--   `data/pubmed_abstracts_raw.csv`: The initial dataset collected from PubMed.
--   `data/pubmed_abstracts_processed.csv`: The dataset after initial cleaning and NLP text cleaning (`CleanText` column added).
--   `data/medical_trends.csv`: A CSV file containing the yearly counts of the top medical keywords and n-grams, ready for visualization.
+python nlp_processor.py
 
-## Acknowledgements
-We extend our sincere gratitude to the **National Center for Biotechnology Information (NCBI)** for providing access to the PubMed database and its robust API. This project relies heavily on the availability of their comprehensive data for medical research abstracts.
 
-## Contributing
-Contributions are welcome! If you have suggestions for improvements, please open an issue or submit a pull request.
+Start the Flask Dashboard
+This will launch the web server for the interactive dashboard.
 
-## 📄 License
+python app.py
 
-This project is licensed under the [MIT License](LICENSE).
 
----
+Once the Flask app is running, open your web browser and navigate to:
 
-## 💬 Contact
+🌐 http://localhost:5000
 
-For collab or publication inquiries:  
-📧 subashyadav7@outlook.com  
-🔗 [LinkedIn](https://www.linkedin.com/in/mathachew7)
+🔮 Future Enhancements
+🔍 Searchable Abstracts: Implement a search functionality within the dashboard, allowing users to search abstracts with keyword highlighting.
+
+📈 Advanced Visualizations: Integrate category-wise heatmaps and develop algorithms for automated trend acceleration detection.
+
+🧠 Biomedical Tagging: Explore integration with specialized NLP libraries like SciSpacy for more advanced and domain-specific biomedical entity recognition and tagging.
+
+📦 Dockerization: Package the entire application into Docker containers for easier deployment and environment consistency.
+
+User Authentication: Add user login and authentication for personalized dashboards or data access control.
+
+Database Integration: Replace CSV files with a proper database (e.g., PostgreSQL, MongoDB) for more robust data storage and querying.
+
+🤝 Acknowledgments
+This project utilizes and builds upon the following incredible resources and libraries:
+
+PubMed / NCBI Entrez API
+
+NLTK (Natural Language Toolkit)
+
+Scikit-learn
+
+Flask (Web Framework)
+
+Chart.js (JavaScript Charting Library)
+
+Tailwind CSS (Utility-first CSS Framework)
+
+📬 Contact
+Feel free to reach out for questions, feedback, or collaborations!
+
+📧 Email: subashyadav7@outlook.com
+
+🌐 LinkedIn: linkedin.com/in/mathachew7
+
+📄 License
+This project is licensed under the MIT License. See the LICENSE file (if you have one, or you can create one) for more details.
