@@ -4,21 +4,32 @@ An NLP-driven tool to identify and visualize trends in medical research from Pub
 
 ## Overview
 
-The **MedResearchTrendSpotter** is a Python-based project designed to identify and visualize emerging trends in medical research. It automates the collection of PubMed abstracts, performs natural language processing (NLP) to extract key concepts (unigrams and bigrams), and analyzes their frequency over time.
+The **MedResearchTrendSpotter** is a robust Python-based project designed to identify and visualize emerging and evolving trends in medical research. It automates the comprehensive collection of PubMed abstracts, performs advanced natural language processing (NLP) to extract key concepts (unigrams and bigrams), and rigorously analyzes their frequency and growth over time.
 
-This tool visualizes trends in PubMed abstracts (2015–2024) using NLP. Built to help researchers, educators, and policymakers understand what’s changing in medical research.
-
----
+This tool provides critical insights by visualizing research trends from PubMed abstracts spanning 2015–2024 using sophisticated NLP techniques. It is specifically built to empower researchers, educators, and policymakers by offering a clear, data-driven understanding of the dynamic shifts within various medical research domains, directly supporting strategic initiatives and informed decision-making.
 
 ## Features
+ - PubMed Data Collection: Automated fetching of abstracts and metadata via the NCBI Entrez API.
 
-* **PubMed Data Collection** via Entrez API
-* **Robust Preprocessing** with lemmatization and stopword removal
-* **TF-IDF-based Keyword Extraction** (top 500 n-grams)
-* **Trend & Category Analysis** with CSV + JSON output
-* **SHAP + SciSpacy + Word Cloud (via dashboard)**
-* **Interactive Dashboard:** Category-level trends, keyword growth, donut chart, and abstract references
+ - Robust Text Preprocessing: Comprehensive cleaning pipeline including lemmatization, stopword removal, and normalization for high-quality text analysis.
 
+ - TF-IDF-based Keyword Extraction: Identifies the top 500 significant unigrams and bigrams using TF-IDF for precise keyword importance.
+
+ - Trend & Category Analysis: Calculates term frequencies over time and assigns keywords to relevant medical categories, generating structured CSV and JSON outputs.
+
+ - Advanced NLP & Interpretability: Integrates SciSpacy for biomedical entity recognition, supports SHAP for model interpretability (if applicable to future predictive models), and enables Word Cloud visualizations via the dashboard.
+
+ - Interactive Dashboard: A user-friendly interface built with Flask, HTML, and Chart.js, providing:
+
+  - Category-level trend lines.
+
+  - Keyword growth visualizations.
+
+  - Donut charts for topic distribution.
+
+  - Forecast charts for future trends.
+
+  - Clickable abstract references for direct access to source material.
 ---
 
 ## Project Structure
