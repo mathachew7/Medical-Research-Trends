@@ -65,29 +65,36 @@ MedResearchTrendSpotter/
 
 ## How It Works: Problem → Process → Product
 
-### 🎯 Problem
+##🎯 Problem
+Medical researchers, institutions, and policymakers face a significant challenge in staying abreast of rapidly evolving research landscapes. Manually reviewing and synthesizing insights from thousands of new PubMed abstracts is an overwhelming and inefficient task, leading to missed emerging trends and delayed strategic responses.
 
-Medical researchers want to understand what’s trending in their field, but reading through thousands of abstracts is overwhelming.
+###🧠 Process
+ - The MedResearchTrendSpotter addresses this problem through a systematic, multi-stage pipeline:
 
-### 🧠 Process
+ - Data Acquisition: We automatically pull over 62,000+ medical abstracts and associated metadata from PubMed using the NCBI Entrez API, covering the period of 2015-2024.
 
-We:
+ - Data Refinement: Raw abstracts undergo rigorous cleaning, including normalization, lemmatization, and stopword removal, ensuring high-quality input for NLP.
 
-* Pulled 62,000+ abstracts from PubMed
-* Cleaned and lemmatized them
-* Extracted 1-2 word medical phrases using TF-IDF
-* Mapped them to categories
-* Analyzed growth and patterns
-* Built an interactive dashboard
+ - Concept Extraction: We apply TF-IDF to extract the top 500 significant unigrams and bigrams (1-2 word medical phrases), identifying the most salient concepts.
+
+ - Categorization & Trend Analysis: Extracted terms are mapped to relevant medical categories, and their frequency patterns are analyzed over time to identify growth, decline, and emerging themes.
+
+ - Visualization Preparation: All processed data is transformed into structured JSON formats, optimized for efficient rendering on the interactive dashboard.
+
+ - Interactive Presentation: A Flask-based web application serves an interactive dashboard, allowing users to visually explore the analyzed trends.
 
 ### 📊 Product (What You See)
+ - The culmination of this pipeline is an interactive web dashboard that provides immediate, actionable insights:
 
-An interactive web dashboard that:
+ - Top Trending Categories: Visualizes the most prominent and fast-growing research areas.
 
-* Shows top trending categories
-* Visualizes keyword usage over time
-* Highlights fast-growing categories
-* Shows related PMIDs + abstract links
+ - Keyword Usage Over Time: Displays the evolution of specific medical terms and concepts.
+
+ - Fast-Growing Categories: Highlights areas experiencing significant recent growth, indicating emerging fields.
+
+ - Related PMIDs & Abstract Links: Enables direct access to the original PubMed abstracts for deeper investigation.
+
+ - Co-occurrence Insights: Offers a conceptual word cloud to understand relationships between keywords.
 
 ---
 
