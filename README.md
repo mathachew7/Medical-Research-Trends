@@ -65,10 +65,10 @@ MedResearchTrendSpotter/
 
 ## How It Works: Problem → Process → Product
 
-##🎯 Problem
+## 🎯 Problem
 Medical researchers, institutions, and policymakers face a significant challenge in staying abreast of rapidly evolving research landscapes. Manually reviewing and synthesizing insights from thousands of new PubMed abstracts is an overwhelming and inefficient task, leading to missed emerging trends and delayed strategic responses.
 
-###🧠 Process
+### 🧠 Process
  - The MedResearchTrendSpotter addresses this problem through a systematic, multi-stage pipeline:
 
  - Data Acquisition: We automatically pull over 62,000+ medical abstracts and associated metadata from PubMed using the NCBI Entrez API, covering the period of 2015-2024.
