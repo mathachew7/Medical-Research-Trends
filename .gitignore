@@ -2,6 +2,13 @@
 __pycache__/
 *.pyc
 
+# Node modules
+med-dashboard/node_modules/
+med-dashboard/package-lock.json
+med-dashboard/yarn.lock
+med-dashboard/.next/
+med-dashboard/.env.local
+
 # Virtual environment
 venv/
 .venv/  # Common alternative name for virtual env

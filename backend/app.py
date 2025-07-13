@@ -1,25 +1,27 @@
-from flask import Flask, jsonify, send_from_directory, render_template, request
+from flask import Flask, jsonify, request
 import pandas as pd
-import os
 import json
 import ijson
-from collections import Counter
+import os
+from flask_cors import CORS
 
-app = Flask(__name__)
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "../data")
 
-# --- Paths ---
-DATA_DIR = "data"
+# File paths
 CATEGORY_TRENDS_PATH = os.path.join(DATA_DIR, "category_trends.csv")
 TERM_CATEGORY_BACKTRACK = os.path.join(DATA_DIR, "term_category_backtrack.json")
-
-# Dashboard JSON files
 DASHBOARD_STATS = os.path.join(DATA_DIR, "dashboard_stats.json")
 FORECAST_DATA = os.path.join(DATA_DIR, "forecast_data.json")
 TOP_KEYWORDS = os.path.join(DATA_DIR, "top_keywords_sparklines.json")
 CO_OCCURRENCE = os.path.join(DATA_DIR, "keyword_co_occurrence.json")
 RECENT_ABSTRACTS = os.path.join(DATA_DIR, "recent_abstracts.json")
 
-# --- Load category trends ---
+# Init Flask
+app = Flask(__name__)
+CORS(app)
+
+# Load trend data once
 print("📊 Loading category trend data...")
 try:
     trends_df = pd.read_csv(CATEGORY_TRENDS_PATH)
@@ -29,39 +31,31 @@ except Exception as e:
     print("❌ Failed to load category_trends.csv:", e)
     trends_df = pd.DataFrame()
 
-# --- Routes ---
-@app.route('/')
-def index():
-    return render_template('index.html')
 
-
-@app.route('/category_distribution')
+@app.route('/api/category_distribution')
 def get_category_distribution():
-    try:
-        if trends_df.empty:
-            return jsonify({"error": "Trend data not available"}), 500
+    if trends_df.empty:
+        return jsonify({"error": "Trend data not available"}), 500
 
-        df = trends_df[trends_df["Year"] <= 2024]
-        category_totals = df.drop(columns=["Year"]).sum().sort_values(ascending=False)
+    df = trends_df[trends_df["Year"] <= 2024]
+    category_totals = df.drop(columns=["Year"]).sum().sort_values(ascending=False)
 
-        result = [
-            {"category": category, "count": int(count)}
-            for category, count in category_totals.items()
-        ]
-        return jsonify(result)
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    result = [
+        {"category": category, "count": int(count)}
+        for category, count in category_totals.items()
+    ]
+    return jsonify(result)
 
 
-@app.route('/trends')
+@app.route('/api/trends')
 def get_all_trends():
     if trends_df.empty:
         return jsonify({"error": "Trend data not available"}), 500
     filtered = trends_df[trends_df["Year"] <= 2024]
     return jsonify({"trends": filtered.to_dict(orient='records')})
 
-@app.route('/top_terms')
+
+@app.route('/api/top_terms')
 def get_top_terms():
     category = request.args.get("category", "").strip()
     N = int(request.args.get("top_n", 10))
@@ -92,7 +86,8 @@ def get_top_terms():
         print("❌ Failed during top_terms:", e)
         return jsonify({"error": "Server error"}), 500
 
-@app.route('/references')
+
+@app.route('/api/references')
 def get_references():
     keyword = request.args.get("keyword", "").strip()
     if not keyword:
@@ -117,8 +112,8 @@ def get_references():
         print("❌ Failed to get references:", e)
         return jsonify({"error": "Server error"}), 500
 
-# --- Dashboard stats (fast from JSON) ---
-@app.route('/stats')
+
+@app.route('/api/stats')
 def serve_dashboard_stats():
     try:
         with open(DASHBOARD_STATS) as f:
@@ -126,7 +121,8 @@ def serve_dashboard_stats():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/forecast')
+
+@app.route('/api/forecast')
 def serve_forecast_data():
     try:
         with open(FORECAST_DATA) as f:
@@ -134,7 +130,8 @@ def serve_forecast_data():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/top_keywords')
+
+@app.route('/api/top_keywords')
 def serve_top_keywords():
     try:
         with open(TOP_KEYWORDS) as f:
@@ -142,7 +139,8 @@ def serve_top_keywords():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/co_occurrence')
+
+@app.route('/api/co_occurrence')
 def serve_co_occurrence():
     try:
         with open(CO_OCCURRENCE) as f:
@@ -150,7 +148,8 @@ def serve_co_occurrence():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/recent_abstracts')
+
+@app.route('/api/recent_abstracts')
 def serve_recent_abstracts():
     try:
         with open(RECENT_ABSTRACTS) as f:
@@ -160,11 +159,7 @@ def serve_recent_abstracts():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/static/<path:filename>')
-def serve_static(filename):
-    return send_from_directory('static', filename)
 
-# --- Main ---
 if __name__ == '__main__':
-    print("\n🚀 Flask running at: http://127.0.0.1:5000/")
+    print("\n🚀 API running at: http://127.0.0.1:5000/api/")
     app.run(debug=True)
